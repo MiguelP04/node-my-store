@@ -1,18 +1,22 @@
 const express = require('express');
 
+const UsersService = require('./../services/users.service');
+
+const service = new UsersService;
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const { limit, offset } = req.query;
-  if (limit && offset) {
-      res.json({
-          limit,
-          offset
-      });
-  } else {
-      res.send('No hay parametros');
-  }
-})
+  const users = service.find();
+  res.json(users);
+});
+
+
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  const user = service.findOne(id)
+  res.json(user);
+});
 
 
 router.get('/:userId/categories/:categoryId/products/:productId', (req, res) => {
